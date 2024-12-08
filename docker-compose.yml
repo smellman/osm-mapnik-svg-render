@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgis/postgis:17-3.5
+    ports:
+      - 5432
+    environment:
+      POSTGRES_USER: gis
+      POSTGRES_PASSWORD: gis
+      POSTGRES_DB: gis
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  import:
+    build:
+      context: .
+      dockerfile: Dockerfile.import
+    volumes:
+      - ./data:/data
+    depends_on:
+      - postgres
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    depends_on:
+      - postgres
+    volumes:
+      - ./data:/data
+volumes:
+  pgdata:

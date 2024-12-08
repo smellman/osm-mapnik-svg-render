@@ -1,0 +1,13 @@
+--- project.mml.orig	2024-12-08 19:53:52
++++ project.mml	2024-12-08 19:54:26
+@@ -15,6 +15,10 @@
+   osm2pgsql: &osm2pgsql
+     type: "postgis"
+     dbname: "gis"
++    host: "postgres"
++    port: 5432
++    user: "gis"
++    password: "gis"
+     key_field: ""
+     geometry_field: "way"
+     srid: *srid
