@@ -45,9 +45,13 @@ def render_map(output_file, hash, width, height):
     # Zoom to the bounding box
     m.zoom_to_box(bbox)
 
-    # Render the svg file
-    surface = cairo.SVGSurface(output_file, width, height)
-    surface.restrict_to_version(cairo.SVG_VERSION_1_2)
+    # Render the svg file or pdf file
+    if (output_file.endswith('.svg')):
+        surface = cairo.SVGSurface(output_file, width, height)
+        surface.restrict_to_version(cairo.SVG_VERSION_1_2)
+    else:
+        surface = cairo.PDFSurface(output_file, width, height)
+        surface.restrict_to_version(cairo.PDF_VERSION_1_5)
     mapnik.render(m, surface)
     surface.finish()
 

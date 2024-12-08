@@ -1,6 +1,8 @@
 # osm-mapnik-svg-builder
 
-This is a simple script that builds SVG files from OpenStreetMap data using the Mapnik library.
+This is a simple script that builds SVG file or PDF file from OpenStreetMap data using the Mapnik library.
+
+This repository is based on [OpenStreetMap Carto](https://github.com/gravitystorm/openstreetmap-carto) master branch.
 
 ## Requirements
 
@@ -10,6 +12,7 @@ This is a simple script that builds SVG files from OpenStreetMap data using the 
 
 ```bash
 cd data
+# Download the OSM data
 aria2c https://download.geofabrik.de/asia/japan/kanto-241206.osm.pbf
 cd ..
 docker compose pull
@@ -38,7 +41,7 @@ docker compose run --rm -u $(id -u):$(id -g) app /data/output.svg 17/35.635966/1
 
 The arguments are:
 
-- The output file
+- The output file, which can be a SVG or PDF file
 - The zoom/latitude/longitude (Hash)
 - Width
 - Height
