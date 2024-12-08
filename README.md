@@ -33,5 +33,5 @@ docker compose run --rm import kanto-241206.osm.pbf
 ## Usage
 
 ```bash
-docker compose run --rm -u $(id -u):$(id -g) app /data/output.svg 
+docker compose run --rm -u $(id -u):$(id -g) app /data/output.svg 17/35.635966/140.161573 1000 1000
 ```
