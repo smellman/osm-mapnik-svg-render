@@ -52,7 +52,15 @@ def render_map(output_file, hash, width, height):
     else:
         surface = cairo.PDFSurface(output_file, width, height)
         surface.restrict_to_version(cairo.PDF_VERSION_1_5)
-    mapnik.render(m, surface)
+    # attribution
+    context = cairo.Context(surface)
+    mapnik.render(m, context)
+    context.set_font_size(20)
+    context.select_font_face("Noto Sans", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
+    context.set_source_rgb(0, 0, 0)
+    x, y = width - 320, height - 10
+    context.move_to(x, y)
+    context.show_text("@ OpenStreetMap contributors")
     surface.finish()
 
 def main():

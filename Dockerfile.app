@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     node-carto \
     unzip \
+    fonts-noto \
     && rm -rf /var/lib/apt/lists/*
 
 # Clone openstreetmap-carto
@@ -22,6 +23,10 @@ COPY project.mml.patch /src/openstreetmap-carto/project.mml.patch
 RUN patch project.mml project.mml.patch
 # Generate the style
 RUN carto project.mml > mapnik.xml
+
+# For fontconfig
+RUN mkdir -p /var/cache/fontconfig
+RUN chmod -R 777 /var/cache/fontconfig
 
 # Copy the entrypoint
 COPY app.py /app/app.py
