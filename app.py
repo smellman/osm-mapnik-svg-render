@@ -32,6 +32,10 @@ def calculate_bbox(center_lon: float, center_lat: float, zoom: int, width: int, 
     )
 
 def render_map(output_file: str, hash: str, width: int, height: int, attribution: str):
+    # Check the output file extension
+    if not (output_file.endswith('.svg') or output_file.endswith('.pdf')):
+        raise ValueError('output_file must be svg or pdf')
+
     # Create a map
     m = mapnik.Map(width, height)
     mapnik.load_map(m, '/src/openstreetmap-carto/mapnik.xml')
@@ -67,7 +71,7 @@ def render_map(output_file: str, hash: str, width: int, height: int, attribution
 
 def main():
     parser = argparse.ArgumentParser(description='Mapnik rendering svg file')
-    parser.add_argument('output_file', type=str, help='output svg file')
+    parser.add_argument('output_file', type=str, help='output svg/pdf file')
     parser.add_argument('hash', type=str, help='hash (ex. 18/35.636056/140.160160)')
     parser.add_argument('width', type=int, help='width')
     parser.add_argument('height', type=int, help='height')

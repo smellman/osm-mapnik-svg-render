@@ -62,7 +62,7 @@ usage: app.py [-h] [--attribution ATTRIBUTION] output_file hash width height
 Mapnik rendering svg file
 
 positional arguments:
-  output_file           output svg file
+  output_file           output svg/pdf file
   hash                  hash (ex. 18/35.636056/140.160160)
   width                 width
   height                height
