@@ -57,8 +57,6 @@ See the help message:
 
 ```
 ❯ docker compose run --rm -u $(id -u):$(id -g) app --help
-[+] Creating 1/0
- ✔ Container osm-mapnik-svg-render-postgres-1  Running                                                                                                                                                        0.0s 
 usage: app.py [-h] [--attribution ATTRIBUTION] output_file hash width height
 
 Mapnik rendering svg file
