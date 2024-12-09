@@ -8,17 +8,17 @@ import math
 WORLD_SIZE = 40075016.686
 TILE_SIZE = 256
 
-def zoom_level_to_scale(zoom):
+def zoom_level_to_scale(zoom: int) -> float:
     return WORLD_SIZE / (TILE_SIZE * 2 ** zoom)
 
-def lon_to_mercator(lon):
+def lon_to_mercator(lon: float) -> float:
     return lon * (WORLD_SIZE / 360.0)
 
-def lat_to_mercator(lat):
+def lat_to_mercator(lat: float) -> float:
     rad = math.radians(lat)
     return math.log(math.tan(math.pi / 4 + rad / 2)) * (WORLD_SIZE / (2 * math.pi))
 
-def calculate_bbox(center_lon, center_lat, zoom, width, height):
+def calculate_bbox(center_lon: float, center_lat: float, zoom: int, width: int, height: int) -> mapnik.Box2d:
     scale = zoom_level_to_scale(zoom)
     mercator_lat = lat_to_mercator(center_lat)
     mercator_lon = lon_to_mercator(center_lon)
@@ -31,7 +31,7 @@ def calculate_bbox(center_lon, center_lat, zoom, width, height):
         mercator_lat + half_height,
     )
 
-def render_map(output_file, hash, width, height):
+def render_map(output_file: str, hash: str, width: int, height: int, attribution: str):
     # Create a map
     m = mapnik.Map(width, height)
     mapnik.load_map(m, '/src/openstreetmap-carto/mapnik.xml')
@@ -52,15 +52,17 @@ def render_map(output_file, hash, width, height):
     else:
         surface = cairo.PDFSurface(output_file, width, height)
         surface.restrict_to_version(cairo.PDF_VERSION_1_5)
-    # attribution
     context = cairo.Context(surface)
     mapnik.render(m, context)
-    context.set_font_size(20)
-    context.select_font_face("Noto Sans", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
-    context.set_source_rgb(0, 0, 0)
-    x, y = width - 320, height - 10
-    context.move_to(x, y)
-    context.show_text("@ OpenStreetMap contributors")
+    # attribution
+    if len(attribution) > 0:
+        context.set_font_size(20)
+        context.select_font_face("Noto Sans", cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
+        context.set_source_rgb(0, 0, 0)
+        padding_width = 11 * len(attribution)
+        x, y = width - padding_width - 10, height - 10
+        context.move_to(x, y)
+        context.show_text(attribution)
     surface.finish()
 
 def main():
@@ -69,9 +71,10 @@ def main():
     parser.add_argument('hash', type=str, help='hash (ex. 18/35.636056/140.160160)')
     parser.add_argument('width', type=int, help='width')
     parser.add_argument('height', type=int, help='height')
+    parser.add_argument('--attribution', type=str, help="custom attribution, if you don't want to embed attribution, set empty value", default="@ OpenStreetMap contributors")
 
     args = parser.parse_args()
-    render_map(args.output_file, args.hash, args.width, args.height)
+    render_map(args.output_file, args.hash, args.width, args.height, args.attribution)
 
 if __name__ == '__main__':
     main()

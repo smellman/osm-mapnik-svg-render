@@ -10,6 +10,8 @@ This repository is based on [OpenStreetMap Carto](https://github.com/gravitystor
 
 ## Setup
 
+Download the OSM data into data directory and build the docker images:
+
 ```bash
 cd data
 # Download the OSM data
@@ -45,5 +47,30 @@ The arguments are:
 - The zoom/latitude/longitude (Hash)
 - Width
 - Height
+- (Optional) Custom attribution
 
 This example, data/output.svg, will render a 1000x1000 SVG file centered at 35.635966, 140.161573 with a zoom level of 17.
+
+## Help
+
+See the help message:
+
+```
+❯ docker compose run --rm -u $(id -u):$(id -g) app --help
+[+] Creating 1/0
+ ✔ Container osm-mapnik-svg-render-postgres-1  Running                                                                                                                                                        0.0s 
+usage: app.py [-h] [--attribution ATTRIBUTION] output_file hash width height
+
+Mapnik rendering svg file
+
+positional arguments:
+  output_file           output svg file
+  hash                  hash (ex. 18/35.636056/140.160160)
+  width                 width
+  height                height
+
+options:
+  -h, --help            show this help message and exit
+  --attribution ATTRIBUTION
+                        custom attribution, if you don't want to embed attribution, set empty value
+```
